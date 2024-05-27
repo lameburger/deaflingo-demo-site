@@ -11,21 +11,26 @@ spinner.ontransitionend = () => {
 
 function extractKeypoints(results) {
   const flatten = (arr) => arr.reduce((flat, toFlatten) => flat.concat(toFlatten), []);
-  const pose = results.poseLandmarks ? 
+
+  const pose = results.poseLandmarks?.landmark ? 
       flatten(results.poseLandmarks.landmark.map(res => [res.x, res.y, res.z, res.visibility])) :
       Array(33 * 4).fill(0);
-  const face = results.faceLandmarks ? 
+
+  const face = results.faceLandmarks?.landmark ? 
       flatten(results.faceLandmarks.landmark.map(res => [res.x, res.y, res.z])) :
       Array(468 * 3).fill(0);
-  const lh = results.leftHandLandmarks ? 
+
+  const lh = results.leftHandLandmarks?.landmark ? 
       flatten(results.leftHandLandmarks.landmark.map(res => [res.x, res.y, res.z])) :
       Array(21 * 3).fill(0);
-  const rh = results.rightHandLandmarks ? 
+
+  const rh = results.rightHandLandmarks?.landmark ? 
       flatten(results.rightHandLandmarks.landmark.map(res => [res.x, res.y, res.z])) :
       Array(21 * 3).fill(0);
 
   return pose.concat(face, lh, rh);
 }
+
 
 function removeElements(landmarks, elements) {
   for (const element of elements) {
@@ -64,9 +69,12 @@ function onResultsHolistic(results) {
   removeLandmarks(results);
   fpsControl.tick();
 
+  // Log the entire results object to check its structure
+  console.log('Holistic results:', results);
+
   // Extract and log keypoints
   const keypoints = extractKeypoints(results);
-  console.log(keypoints);
+  console.log('Extracted keypoints:', keypoints);
 
   canvasCtx4.save();
   canvasCtx4.clearRect(0, 0, out4.width, out4.height);
@@ -111,6 +119,9 @@ function onResultsHolistic(results) {
 
   canvasCtx4.restore();
 }
+
+
+
 const holistic = new Holistic({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}`;
 }});

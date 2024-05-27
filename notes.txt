@@ -1,0 +1,8 @@
+Currently have live image of mediapipe landmarks.
+
+I need to use these landmarks to make an estimation of what gesture is being made.
+
+Can h5 files be used for tensorflowjs? Might have to be json.
+
+Logic
+

@@ -31,7 +31,6 @@ function extractKeypoints(results) {
   return pose.concat(face, lh, rh);
 }
 
-
 function removeElements(landmarks, elements) {
   for (const element of elements) {
     delete landmarks[element];

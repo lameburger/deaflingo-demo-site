@@ -9,6 +9,20 @@ spinner.ontransitionend = () => {
   spinner.style.display = 'none';
 };
 
+let sequence = [];
+let sentence = [];
+let predictions = [];
+const threshold = 0.5;
+const actions = ["action1", "action2", "action3"]; // Example actions, replace with actual actions
+let model;
+
+// Load your TensorFlow.js model (assuming you have a model to load)
+async function loadModel() {
+  model = await tf.loadLayersModel('path_to_your_model/model.json');
+}
+
+loadModel();
+
 function extractKeypoints(results) {
   const flatten = (arr) => arr.reduce((flat, toFlatten) => flat.concat(toFlatten), []);
 
@@ -45,6 +59,21 @@ function removeLandmarks(results) {
   }
 }
 
+function probViz(res, actions, ctx, colors) { // visualize the probabilities
+  ctx.save();
+  const barWidth = 30;
+  const barSpacing = 10;
+  const offset = 10;
+  for (let i = 0; i < actions.length; i++) {
+    ctx.fillStyle = colors[i];
+    const barHeight = res[i] * 100;
+    ctx.fillRect(offset + (barWidth + barSpacing) * i, 50 - barHeight, barWidth, barHeight);
+    ctx.fillStyle = "#000000";
+    ctx.fillText(actions[i], offset + (barWidth + barSpacing) * i, 50 - barHeight - 10);
+  }
+  ctx.restore();
+}
+
 function connect(ctx, connectors) {
   const canvas = ctx.canvas;
   for (const connector of connectors) {
@@ -63,38 +92,59 @@ function connect(ctx, connectors) {
   }
 }
 
-function onResultsHolistic(results) {
+async function onResultsHolistic(results) {
   document.body.classList.add('loaded');
   removeLandmarks(results);
   fpsControl.tick();
 
-  // Log the entire results object to check its structure
-  console.log('Holistic results:', results);
-
-  // Extract and log keypoints
+  // Extract keypoints
   const keypoints = extractKeypoints(results);
-  console.log('Extracted keypoints:', keypoints);
+  sequence.push(keypoints);
+  sequence = sequence.slice(-30);
 
+  if (sequence.length === 30 && model) {
+    // Prediction logic
+    const inputTensor = tf.tensor([sequence]);
+    const res = model.predict(inputTensor).dataSync();
+    const maxRes = Math.max(...res);
+    const maxIndex = res.indexOf(maxRes);
+    const action = actions[maxIndex];
+    predictions.push(maxIndex);
+
+    // Visualization logic
+    if (predictions.slice(-10).filter(p => p === maxIndex).length === 10) {
+      if (maxRes > threshold) {
+        if (sentence.length > 0) {
+          if (action !== sentence[sentence.length - 1]) {
+            sentence.push(action);
+          }
+        } else {
+          sentence.push(action);
+        }
+      }
+    }
+
+    if (sentence.length > 5) {
+      sentence = sentence.slice(-5);
+    }
+
+    // Visualization on the canvas
+    const colors = ["#ff0000", "#00ff00", "#0000ff"]; // Example colors
+    probViz(res, actions, canvasCtx4, colors);
+
+    canvasCtx4.fillStyle = "rgba(245, 117, 16, 1)";
+    canvasCtx4.fillRect(0, 0, 640, 40);
+    canvasCtx4.fillStyle = "#ffffff";
+    canvasCtx4.font = "30px Arial";
+    canvasCtx4.fillText(sentence.join(' '), 3, 30);
+  }
+
+  // Draw landmarks and connectors
   canvasCtx4.save();
   canvasCtx4.clearRect(0, 0, out4.width, out4.height);
   canvasCtx4.drawImage(results.image, 0, 0, out4.width, out4.height);
   canvasCtx4.lineWidth = 5;
-  
-  if (results.poseLandmarks) {
-    if (results.rightHandLandmarks) {
-      canvasCtx4.strokeStyle = '#00FF00';
-      connect(canvasCtx4, [
-        [results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], results.rightHandLandmarks[0]]
-      ]);
-    }
-    if (results.leftHandLandmarks) {
-      canvasCtx4.strokeStyle = '#FF0000';
-      connect(canvasCtx4, [
-        [results.poseLandmarks[POSE_LANDMARKS.LEFT_ELBOW], results.leftHandLandmarks[0]]
-      ]);
-    }
-  }
-  
+
   drawConnectors(canvasCtx4, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00' });
   drawLandmarks(canvasCtx4, results.poseLandmarks, { color: '#00FF00', fillColor: '#FF0000' });
   drawConnectors(canvasCtx4, results.rightHandLandmarks, HAND_CONNECTIONS, { color: '#00CC00' });
@@ -120,15 +170,16 @@ function onResultsHolistic(results) {
 }
 
 
-
 const holistic = new Holistic({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}`;
 }});
-holistic.onResults(onResultsHolistic);
+holistic.onResults(drawLandmarks);
 
 const camera = new Camera(video4, {
   onFrame: async () => {
-    await holistic.send({image: video4});
+    if (model) {
+      await holistic.send({ image: video4 });
+    }
   },
   width: 480,
   height: 480

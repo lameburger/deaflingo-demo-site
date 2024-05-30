@@ -18,7 +18,13 @@ let model;
 
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
-  model = await tf.loadLayersModel('path_to_your_model/model.json');
+  try {
+    model = await tf.loadLayersModel('/demo-site/tfjs_files/model.json');
+    console.log("Model loaded successfully.");
+    console.log("Model summary:", model.summary());
+  } catch (error) {
+    console.error("Error loading model:", error);
+  }
 }
 
 loadModel();
@@ -103,8 +109,7 @@ async function onResultsHolistic(results) {
   sequence = sequence.slice(-30);
 
   if (sequence.length === 30 && model) {
-    // Prediction logic
-    const inputTensor = tf.tensor([sequence]);
+    const inputTensor = tf.tensor([sequence]);  // Ensure sequence shape is (1, 30, 1662)
     const res = model.predict(inputTensor).dataSync();
     const maxRes = Math.max(...res);
     const maxIndex = res.indexOf(maxRes);
@@ -168,7 +173,6 @@ async function onResultsHolistic(results) {
 
   canvasCtx4.restore();
 }
-
 
 const holistic = new Holistic({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}`;

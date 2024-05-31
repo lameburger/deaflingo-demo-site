@@ -10,15 +10,37 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/holistic.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <link rel="stylesheet" href=".\static\styles\styles.css">
 </head>
 
 <body>
-    <canvas class="output4" width="480px" height="480px"></canvas>
-    <div class="loading">
-      <div class="spinner"></div>
-    </div>
-    <div style="visibility: hidden" class="control4"></div>
+  <header>
+    <img src=".\images\demo_logo.png" alt="Logo" class="logo">
+  </header>
 
-  <script type="text/javascript" src="./scripts/holistic.js"></script>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <div class="wordcontainer">
+          <div class="word"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <canvas class="output4" width="480px" height="480px"></canvas>
+        <div class="loading">
+          <div class="spinner"></div>
+        </div>
+        <div style="visibility: hidden" class="control4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./static/scripts/generatewords.js"></script>
+  <script type="text/javascript" src="./static/scripts/holistic.js"></script>
 </body>
 </html>

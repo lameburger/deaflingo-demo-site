@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0; /* Optional: background color */
+    overflow-y: hidden;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.logo {
+    width: 80%; /* Scales the image to 80% of its original width */
+    max-width: 400px; /* Optional: sets a maximum width */
+}
+
+/* Container for the word display */
+.wordcontainer {
+    margin-top: 50px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the displayed word */
+.word {
+    font-size: 2em;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    white-space: nowrap; /* Ensure words stay in one line */
+}
+
+.output4 {
+    margin-top: 40px;
+}
+
+.wordcontainer .word div {
+    display: inline-block;
+    margin-right: 15px; /* Adjust the value to increase or decrease space */
+}

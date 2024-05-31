@@ -27,7 +27,7 @@ let index = 0;
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
-    model = await tf.loadLayersModel('/demo-site/tfjs_files/model.json');
+    model = await tf.loadLayersModel('./tfjs_files/model.json');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
   } catch (error) {

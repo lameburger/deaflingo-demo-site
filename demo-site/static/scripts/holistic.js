@@ -1,5 +1,6 @@
 const video4 = document.createElement('video');
 const out4 = document.getElementsByClassName('output4')[0];
+const wordCounter = document.querySelector('.word-counter');
 const controlsElement4 = document.getElementsByClassName('control4')[0];
 const canvasCtx4 = out4.getContext('2d');
 
@@ -23,6 +24,7 @@ const actionThreshold = 5; // Change this value to the desired threshold
 
 // word index
 let index = 0;
+wordCounter.textContent = '0/5';
 
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
@@ -107,8 +109,9 @@ function highlightWord(word) {
 
   if (word === currentWord) {
       const wordSpans = currentDiv.querySelectorAll('span');
-      wordSpans.forEach(span => span.style.color = 'green');
+      wordSpans.forEach(span => span.style.color = '#21a663');
       index++; // Increase index by 1
+      wordCounter.textContent = `${index}/5`;
   }
 
   // if (index == (wordDivs.length - 1)) {
@@ -162,14 +165,11 @@ async function onResultsHolistic(results) {
       sentence = sentence.slice(-5);
     }
 
-    const colors = ["#ff0000", "#00ff00", "#0000ff"];
-    probViz(res, actions, canvasCtx4, colors);
-
-    canvasCtx4.fillStyle = "rgba(245, 117, 16, 1)";
-    canvasCtx4.fillRect(0, 0, 640, 40);
-    canvasCtx4.fillStyle = "#ffffff";
-    canvasCtx4.font = "30px Arial";
-    canvasCtx4.fillText(sentence.join(' '), 3, 30);
+    // canvasCtx4.fillStyle = "rgba(245, 117, 16, 1)";
+    // canvasCtx4.fillRect(0, 0, 640, 40);
+    // canvasCtx4.fillStyle = "#ffffff";
+    // canvasCtx4.font = "30px Arial";
+    // canvasCtx4.fillText(sentence.join(' '), 3, 30);
 
     // Highlight the word in the word container if consistentAction is not null
     if (consistentAction !== null) {
@@ -205,8 +205,6 @@ async function onResultsHolistic(results) {
 
   canvasCtx4.restore();
 }
-
-
 
 const holistic = new Holistic({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}`;

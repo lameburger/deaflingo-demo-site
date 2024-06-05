@@ -19,19 +19,18 @@ header {
     max-width: 400px; /* Optional: sets a maximum width */
 }
 
-/* Container for the word display */
-.wordcontainer {
-    margin-top: 50px;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.word-counter {
+    color: #21a663;
+    text-align: left;
 }
-
-/* Styling for the displayed word */
-.word {
+  .wordcontainer {
+    margin-top: 20px;
     font-size: 2em;
     font-family: 'Roboto Mono', monospace;
+}
+
+  .word span {
+    margin: 0 2px;
     text-align: center;
     white-space: nowrap; /* Ensure words stay in one line */
 }

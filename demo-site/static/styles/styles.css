@@ -23,23 +23,73 @@ header {
     color: #21a663;
     text-align: left;
 }
-  .wordcontainer {
+
+.wordcontainer {
     margin-top: 20px;
     font-size: 2em;
     font-family: 'Roboto Mono', monospace;
-}
-
-  .word span {
-    margin: 0 2px;
-    text-align: center;
-    white-space: nowrap; /* Ensure words stay in one line */
-}
-
-.output4 {
-    margin-top: 40px;
+    white-space: nowrap; /* Ensure words stay on one line */
 }
 
 .wordcontainer .word div {
     display: inline-block;
     margin-right: 15px; /* Adjust the value to increase or decrease space */
+}
+
+.output4 {
+    margin-top: 40px;
+    border-radius: 15px; /* Adjust the value as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visual effect */
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+    max-height: 480px;
+}
+
+@media (max-width: 1000px) {
+    .logo {
+        width: 40%; /* Adjusted to 40% to achieve a more noticeable reduction */
+    }
+
+    body {
+        overflow-y: scroll;
+    }
+
+    .output4 {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.consistent-action {
+    margin-top: 40px;
+    border-radius: 15px; /* Adjust the value as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visual effect */
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

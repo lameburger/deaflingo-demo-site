@@ -1,19 +1,18 @@
 const video4 = document.createElement('video');
 const out4 = document.getElementsByClassName('output4')[0];
 const wordCounter = document.querySelector('.word-counter');
+const actionDisplay = document.querySelector('.consistent-action');
 const controlsElement4 = document.getElementsByClassName('control4')[0];
 const canvasCtx4 = out4.getContext('2d');
 
 const fpsControl = new FPS();
-const spinner = document.querySelector('.loading');
-spinner.ontransitionend = () => {
-  spinner.style.display = 'none';
-};
+const loadingScreen = document.querySelector('.loading-screen');
+const mainContent = document.querySelector('.main-content');
 
 let sequence = [];
 let sentence = [];
 let predictions = [];
-const threshold = 0.1;
+const threshold = 0.5;
 const actions = ["hello", "thanks", "iloveyou"];
 
 // Used to eliminate jumpy action output 
@@ -22,9 +21,14 @@ let consistentAction = null;
 let actionCounter = 0;
 const actionThreshold = 5; // Change this value to the desired threshold
 
+// Load time
+let lastFrameTime = 0;
+let isModelLoaded = false;
+
 // word index
 let index = 0;
 wordCounter.textContent = '0/5';
+actionDisplay.textContent = 'Waiting';
 
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
@@ -32,6 +36,12 @@ async function loadModel() {
     model = await tf.loadLayersModel('./tfjs_files/model.json');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
+    // Hide loading screen
+    loadingScreen.style.display = 'none';
+    // Show main content
+    mainContent.style.display = 'block';
+    // Start the camera once the model is loaded
+    startCamera();
   } catch (error) {
     console.error("Error loading model:", error);
   }
@@ -119,7 +129,6 @@ function highlightWord(word) {
   // }
 }
 
-
 async function onResultsHolistic(results) {
   document.body.classList.add('loaded');
   fpsControl.tick();
@@ -146,6 +155,7 @@ async function onResultsHolistic(results) {
     if (actionCounter >= actionThreshold) {
       console.log('Consistent action:', action);
       consistentAction = action;
+      actionDisplay.textContent = `${consistentAction}`;
       actionCounter = 0; // Reset counter after output
     }
 
@@ -165,13 +175,6 @@ async function onResultsHolistic(results) {
       sentence = sentence.slice(-5);
     }
 
-    // canvasCtx4.fillStyle = "rgba(245, 117, 16, 1)";
-    // canvasCtx4.fillRect(0, 0, 640, 40);
-    // canvasCtx4.fillStyle = "#ffffff";
-    // canvasCtx4.font = "30px Arial";
-    // canvasCtx4.fillText(sentence.join(' '), 3, 30);
-
-    // Highlight the word in the word container if consistentAction is not null
     if (consistentAction !== null) {
       highlightWord(consistentAction);
     }
@@ -182,8 +185,8 @@ async function onResultsHolistic(results) {
   canvasCtx4.drawImage(results.image, 0, 0, out4.width, out4.height);
   canvasCtx4.lineWidth = 5;
 
-  drawConnectors(canvasCtx4, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00' });
-  drawLandmarks(canvasCtx4, results.poseLandmarks, { color: '#00FF00', fillColor: '#FF0000' });
+  // drawConnectors(canvasCtx4, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00' });
+  // drawLandmarks(canvasCtx4, results.poseLandmarks, { color: '#00FF00', fillColor: '#FF0000' });
   drawConnectors(canvasCtx4, results.rightHandLandmarks, HAND_CONNECTIONS, { color: '#00CC00' });
   drawLandmarks(canvasCtx4, results.rightHandLandmarks, {
     color: '#00FF00',
@@ -220,6 +223,13 @@ const camera = new Camera(video4, {
   width: 480,
   height: 480
 });
+
+// Adjust camera settings for mobile devices
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+  camera.width = 320;
+  camera.height = 320;
+}
+
 camera.start();
 
 new ControlPanel(controlsElement4, {
@@ -253,4 +263,3 @@ new ControlPanel(controlsElement4, {
   video4.classList.toggle('selfie', options.selfieMode);
   holistic.setOptions(options);
 });
-

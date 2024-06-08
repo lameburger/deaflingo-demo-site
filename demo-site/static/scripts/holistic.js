@@ -27,10 +27,13 @@ let isModelLoaded = false;
 let index = 0;
 wordCounter.textContent = '0/5';
 
+tf.setBackend('wasm').then(() => main());
+
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
     model = await tf.loadLayersModel('./tfjs_files/model.json');
+    await model.save('localstorage://my-model');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
     // Hide loading screen

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="./static/styles/styles.css">
+
+</head>
+<body>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-content {
+      flex: 1;
+    }
+    .footer {
+      background-color: #f8f9fa;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .footer a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
+  <header>
+    <a href="index.html">
+        <img src="./images/demo_logo.png" alt="Logo" class="logo">
+    </a>
+  </header>
+
+    <div class="main-content" style="display: none;">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center">
+              <p>The idea for <b>deaflingo</b> began at HackKU 2024 where we threw together a python web-app that used a small model trained on 200,000 images to recognize American sign language letters. We ended up taking the third-place prize for our themed track. A pleasant surprise, we had no idea the demo video we posted would hit roughly 200k views on YouTube. After reading many flattering comments and realizing the potential of the app, we decided that we wanted to make something much bigger. So, we are now taking two tracks with this. <b>One</b>, we will be participating in the NeurIPS 2024 high school research paper submission to showcase our approach of a new hybrid model that we are currently working on to recognize any sign language (far outside the scope of alphabetical gestrures). There will be more to this, so be on the lookout for updates. <b>Two</b>, we want to make this a full-fledged app. This demo site was the easiest and most accessible way to access our idea, however we would like to make it into the Android/IOS app store with a fully functioning sign language learning app that utilizess vision and a deep learning model to help you learn.</p>
+          </div>
+        </div>
+      </div>
+        <div class="row justify-content-center">
+        <div class="foot text-center">
+            <img src="./images/kick.png" id=""style="width: 20px; height: 20px; margin-right: 0px">
+            <a href="https://www.kickstarter.com" id="kick" target="_blank">Kickstarter</a>
+            <img src="./images/yt.webp" id=""style="width: 20px; height: 20px; margin-right: 5px;">
+            <a href="https://www.youtube.com" id="youtube" target="_blank">YouTube</a>
+            <img src="./images/rocket.png" id="" style="width: 20px; height: 20px; margin-right: 5px;">
+            <a href="next.html" id="next">What's Next</a>
+        </div>
+        </div>
+    </div>
+
+  <script type="text/javascript" src="./static/scripts/generatewords.js"></script>
+  <script type="text/javascript" src="./static/scripts/holistic.js"></script>
+</body>
+</html>

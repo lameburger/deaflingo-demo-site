@@ -32,8 +32,8 @@ tf.setBackend('wasm').then(() => main());
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
-    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-5c953.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=eec51de6-6a55-48a1-a6d9-a538f3a58b68');
-    await model.save('https://firebasestorage.googleapis.com/v0/b/deaflingo-5c953.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=eec51de6-6a55-48a1-a6d9-a538f3a58b68');
+    model = await tf.loadLayersModel('./tfjs_files/model.json');
+    // await model.save('https://firebasestorage.googleapis.com/v0/b/deaflingo-5c953.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=eec51de6-6a55-48a1-a6d9-a538f3a58b68');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
     // Hide loading screen

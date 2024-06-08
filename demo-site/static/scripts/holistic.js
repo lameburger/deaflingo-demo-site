@@ -1,11 +1,9 @@
 const video4 = document.createElement('video');
 const out4 = document.getElementsByClassName('output4')[0];
 const wordCounter = document.querySelector('.word-counter');
-const actionDisplay = document.querySelector('.consistent-action');
+const actionDisplay = document.querySelector('.waiting-text');
 const controlsElement4 = document.getElementsByClassName('control4')[0];
 const canvasCtx4 = out4.getContext('2d');
-
-const fpsControl = new FPS();
 const loadingScreen = document.querySelector('.loading-screen');
 const mainContent = document.querySelector('.main-content');
 
@@ -28,7 +26,6 @@ let isModelLoaded = false;
 // word index
 let index = 0;
 wordCounter.textContent = '0/5';
-actionDisplay.textContent = 'Waiting';
 
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
@@ -95,21 +92,6 @@ function removeLandmarks(results) {
   }
 }
 
-function probViz(res, actions, ctx, colors) { // visualize the probabilities
-  ctx.save();
-  const barWidth = 30;
-  const barSpacing = 10;
-  const offset = 10;
-  for (let i = 0; i < actions.length; i++) {
-    ctx.fillStyle = colors[i];
-    const barHeight = res[i] * 100;
-    ctx.fillRect(offset + (barWidth + barSpacing) * i, 50 - barHeight, barWidth, barHeight);
-    ctx.fillStyle = "#000000";
-    ctx.fillText(actions[i], offset + (barWidth + barSpacing) * i, 50 - barHeight - 10);
-  }
-  ctx.restore();
-}
-
 function highlightWord(word) {
   const wordsContainer = document.querySelector('.wordcontainer .word');
   const wordDivs = wordsContainer.querySelectorAll('div');
@@ -124,14 +106,10 @@ function highlightWord(word) {
       wordCounter.textContent = `${index}/5`;
   }
 
-  // if (index == (wordDivs.length - 1)) {
-  //   alert("Test finished");
-  // }
 }
 
 async function onResultsHolistic(results) {
   document.body.classList.add('loaded');
-  fpsControl.tick();
 
   const keypoints = extractKeypoints(results);
   sequence.push(keypoints);
@@ -191,22 +169,23 @@ async function onResultsHolistic(results) {
   drawLandmarks(canvasCtx4, results.rightHandLandmarks, {
     color: '#00FF00',
     fillColor: '#FF0000',
-    lineWidth: 2,
+    lineWidth: 1,
     radius: (data) => {
-      return lerp(data.from.z, -0.15, .1, 10, 1);
+      return lerp(data.from.z, -0.15, .1, 5, 1);
     }
   });
   drawConnectors(canvasCtx4, results.leftHandLandmarks, HAND_CONNECTIONS, { color: '#CC0000' });
   drawLandmarks(canvasCtx4, results.leftHandLandmarks, {
     color: '#FF0000',
     fillColor: '#00FF00',
-    lineWidth: 2,
+    lineWidth: 1,
     radius: (data) => {
-      return lerp(data.from.z, -0.15, .1, 10, 1);
+      return lerp(data.from.z, -0.15, .1, 5, 1);
     }
   });
 
   canvasCtx4.restore();
+  
 }
 
 const holistic = new Holistic({locateFile: (file) => {
@@ -224,6 +203,34 @@ const camera = new Camera(video4, {
   height: 480
 });
 
+document.getElementById('monke').addEventListener('click', () => {
+  const wordsContainer = document.querySelector('.wordcontainer .word');
+  const wordDivs = wordsContainer.querySelectorAll('div');
+
+  const currentDiv = wordDivs[index];
+  const currentWord = currentDiv.textContent;
+  const flipContainer = document.querySelector('.flip-container');
+  flipContainer.classList.add('flipping');
+  console.log(index);
+  console.log('CURRENT: WORD: ', currentWord);
+  actionDisplay.textContent = `${currentWord}`;
+  
+  // Populate the div with an image
+  const divToPopulate = document.querySelector('.back'); // Change this selector to match the div you want to populate
+  if (currentWord == 'iloveyou') {
+    divToPopulate.innerHTML = '<img src="./images/iloveyou.gif" style="margin-top: 25%;">';
+  } else if (currentWord == 'hello') {
+    divToPopulate.innerHTML = '<img src="./images/hello.gif" style="margin-top: 25%;">';
+  } else {
+    divToPopulate.innerHTML = '<img src="./images/thanks.gif" style="margin-top: 25%;">';
+  }
+  
+  setTimeout(() => {
+    flipContainer.classList.remove('flipping');
+    // document.querySelector('.back').textContent = `${currentWord}`;
+  }, 5000);
+});
+
 // Adjust camera settings for mobile devices
 if (/Mobi|Android/i.test(navigator.userAgent)) {
   camera.width = 320;
@@ -239,26 +246,7 @@ new ControlPanel(controlsElement4, {
   minDetectionConfidence: 0.5,
   minTrackingConfidence: 0.5
 })
-.add([
-  new StaticText({title: 'MediaPipe Holistic'}),
-  fpsControl,
-  new Toggle({title: 'Selfie Mode', field: 'selfieMode'}),
-  new Toggle({title: 'Upper-body Only', field: 'upperBodyOnly'}),
-  new Toggle(
-      {title: 'Smooth Landmarks', field: 'smoothLandmarks'}),
-  new Slider({
-    title: 'Min Detection Confidence',
-    field: 'minDetectionConfidence',
-    range: [0, 1],
-    step: 0.01
-  }),
-  new Slider({
-    title: 'Min Tracking Confidence',
-    field: 'minTrackingConfidence',
-    range: [0, 1],
-    step: 0.01
-  }),
-])
+.add([])
 .on(options => {
   video4.classList.toggle('selfie', options.selfieMode);
   holistic.setOptions(options);

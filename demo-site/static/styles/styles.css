@@ -6,6 +6,7 @@ body {
     flex-direction: column;
     background-color: #f0f0f0; /* Optional: background color */
     overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 header {
@@ -15,20 +16,53 @@ header {
 }
 
 .logo {
+    margin-top: 10px;
     width: 80%; /* Scales the image to 80% of its original width */
     max-width: 400px; /* Optional: sets a maximum width */
+    margin-bottom: 30px;
+}
+
+#world-image {
+    margin-top: 2px;
+}
+
+#lang:hover {
+    color: black;
 }
 
 .word-counter {
+    font-size: 1.5em;
     color: #21a663;
-    text-align: left;
+    font-weight: bold;
+}
+
+.main-content {
+    font-family: 'Roboto Mono', monospace;
+    flex-grow: 1;
+}
+
+.text-box {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; 
+    max-width: 800px;
 }
 
 .wordcontainer {
-    margin-top: 20px;
     font-size: 2em;
-    font-family: 'Roboto Mono', monospace;
     white-space: nowrap; /* Ensure words stay on one line */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.language-select {
+    color: grey;
+    margin-right: 0%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 .wordcontainer .word div {
@@ -61,24 +95,90 @@ header {
     }
 }
 
+.waiting-text {
+    padding-top: 22%;
+    padding-right: 61%;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
 .consistent-action {
     margin-top: 40px;
     border-radius: 15px; /* Adjust the value as needed */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visual effect */
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+    max-height: 480px;
+    background-color: white;
+    font-weight: bold;
+    aspect-ratio: 1/1; /* Ensure consistent aspect ratio */
 }
 
-.loading-screen {
-    position: fixed;
+.foot {
+    margin-top: 15px;
+    padding-bottom: 20px;
+}
+
+#kick, #youtube, #next {
+    color: grey;
+    margin-right: 15px;
+    padding-bottom: 20px;
+}
+
+#kick:hover {
+    color: black;
+}
+
+#youtube:hover {
+    color: black;
+}
+
+#next:hover {
+    color: black;
+}
+
+/* Add the following CSS for the flip animation */
+.flip-container {
+    perspective: 1000px;
+  }
+  
+  .flip-container.flipping .flipper {
+    transform: rotateY(180deg);
+    transition: transform 0.6s;
+  }
+  
+  .flip-container .flipper {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    position: relative;
+  }
+  
+  .flip-container .front, .flip-container .back {
+    backface-visibility: hidden;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+    
+  }
+  
+  .flip-container .back {
+    margin-top: 40px;
+    border-radius: 15px; /* Adjust the value as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visual effect */
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+    max-height: 480px;
+    background-color: white;
+    font-weight: bold;
+    aspect-ratio: 1/1; /* Ensure consistent aspect ratio */
+    transform: rotateY(180deg);
+    
+  }
+  
 
 .spinner {
     border: 16px solid #f3f3f3; /* Light grey */

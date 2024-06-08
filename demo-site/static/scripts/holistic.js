@@ -17,7 +17,7 @@ const actions = ["hello", "thanks", "iloveyou"];
 let lastAction = null;
 let consistentAction = null;
 let actionCounter = 0;
-const actionThreshold = 5; // Change this value to the desired threshold
+const actionThreshold = 10; // Change this value to the desired threshold
 
 // Load time
 let lastFrameTime = 0;
@@ -103,7 +103,11 @@ function highlightWord(word) {
       const wordSpans = currentDiv.querySelectorAll('span');
       wordSpans.forEach(span => span.style.color = '#21a663');
       index++; // Increase index by 1
-      wordCounter.textContent = `${index}/5`;
+      if (index == 5) {
+        location.reload();
+      } else {
+        wordCounter.textContent = `${index}/5`;
+      }
   }
 
 }

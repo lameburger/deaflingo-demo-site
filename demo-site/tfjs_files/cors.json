@@ -1,8 +1,0 @@
-[
-    {
-      "origin": ["https://deaflingo-5c953.web.app/"],
-      "responseHeader": ["Content-Type"],
-      "method": ["GET"],
-      "maxAgeSeconds": 3600
-    }
-  ]

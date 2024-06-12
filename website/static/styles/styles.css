@@ -20,6 +20,7 @@ header {
     width: 80%; /* Scales the image to 80% of its original width */
     max-width: 400px; /* Optional: sets a maximum width */
     margin-bottom: 30px;
+    margin-left: 0%;
 }
 
 #world-image {
@@ -81,10 +82,6 @@ header {
 }
 
 @media (max-width: 1000px) {
-    .logo {
-        width: 40%; /* Adjusted to 40% to achieve a more noticeable reduction */
-    }
-
     body {
         overflow-y: scroll;
     }

@@ -1,5 +1,5 @@
 // List of random words
-let words = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'nice', 'thanks', 'time', 'what', 'where'];
+let words = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'nice', 'thanks', 'what', 'where'];
 
 // Function to generate a random word without repetition
 function generateRandomWord() {

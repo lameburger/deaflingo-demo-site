@@ -17,7 +17,7 @@ const actions = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'ni
 let lastAction = null;
 let consistentAction = null;
 let actionCounter = 0;
-const actionThreshold = 10; // Change this value to the desired threshold
+const actionThreshold = 5; // Change this value to the desired threshold
 
 // Load time
 let lastFrameTime = 0;
@@ -111,6 +111,10 @@ function highlightWord(word) {
       }
   }
 
+}
+
+function skipWord() {
+  highlightWord(currentWord);
 }
 
 async function onResultsHolistic(results) {

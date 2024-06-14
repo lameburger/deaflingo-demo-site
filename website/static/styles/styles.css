@@ -17,7 +17,6 @@ header {
 
 .logo {
     margin-top: 10px;
-    width: 80%; /* Scales the image to 80% of its original width */
     max-width: 400px; /* Optional: sets a maximum width */
     margin-bottom: 30px;
     margin-left: 0%;
@@ -112,20 +111,26 @@ header {
     aspect-ratio: 1/1; /* Ensure consistent aspect ratio */
 }
 
-.btn-translucent {
-    margin-bottom: 4px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: none;
+.clickable-text {
+    cursor: pointer;
     color: grey;
+    text-decoration: none;  /* Remove underline */
+    background-color: rgba(255, 255, 255, 0.5);  /* Optional: if you want a background */
+    padding: 4px;  /* Optional: if you want some padding */
+    border: none;  /* Remove border */
 }
 
-.btn-translucent:hover {
-    background-color: black;
+/* Add the hover state override */
+.clickable-text:hover {
+    color: grey;  /* Keep the same text color on hover */
+    text-decoration: none;  /* Ensure underline doesn't appear */
+    background-color: rgba(255, 255, 255, 0.5);  /* Keep the same background color */
 }
+
 
 .foot {
-    margin-top: 15px;
-    padding-bottom: 20px;
+    margin-top: 25px;
+    /* padding-bottom: 20px; */
 }
 
 #kick, #youtube, #next {

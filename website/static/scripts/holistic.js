@@ -17,7 +17,7 @@ const actions = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'ni
 let lastAction = null;
 let consistentAction = null;
 let actionCounter = 0;
-const actionThreshold = 5; // Change this value to the desired threshold
+const actionThreshold = 1; // Change this value to the desired threshold
 
 // Load time
 let lastFrameTime = 0;
@@ -30,9 +30,11 @@ wordCounter.textContent = '0/5';
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
-    model = await tf.loadLayersModel('./tfjs_files/model.json');
+    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-7190a.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=e5df5a66-a17d-4d52-b339-9afe1b8fbede');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
+    console.log(tf.getBackend());
+
     // Hide loading screen
     loadingScreen.style.display = 'none';
     // Show main content
@@ -114,6 +116,13 @@ function highlightWord(word) {
 }
 
 function skipWord() {
+  const wordsContainer = document.querySelector('.wordcontainer .word');
+  const wordDivs = wordsContainer.querySelectorAll('div');
+
+  const currentDiv = wordDivs[index];
+  const currentWord = currentDiv.textContent;
+
+  console.log("WORD SKIPPED")
   highlightWord(currentWord);
 }
 
@@ -176,19 +185,19 @@ async function onResultsHolistic(results) {
 
   // drawConnectors(canvasCtx4, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00' });
   // drawLandmarks(canvasCtx4, results.poseLandmarks, { color: '#00FF00', fillColor: '#FF0000' });
-  drawConnectors(canvasCtx4, results.rightHandLandmarks, HAND_CONNECTIONS, { color: '#00CC00' });
+  drawConnectors(canvasCtx4, results.rightHandLandmarks, HAND_CONNECTIONS, { color: '#FFFFFF' });
   drawLandmarks(canvasCtx4, results.rightHandLandmarks, {
-    color: '#00FF00',
-    fillColor: '#FF0000',
+    color: '#00013',
+    fillColor: '#00013',
     lineWidth: 1,
     radius: (data) => {
       return lerp(data.from.z, -0.15, .1, 5, 1);
     }
   });
-  drawConnectors(canvasCtx4, results.leftHandLandmarks, HAND_CONNECTIONS, { color: '#CC0000' });
+  drawConnectors(canvasCtx4, results.leftHandLandmarks, HAND_CONNECTIONS, { color: '#FFFFFF' });
   drawLandmarks(canvasCtx4, results.leftHandLandmarks, {
-    color: '#FF0000',
-    fillColor: '#00FF00',
+    color: '#00013',
+    fillColor: '#00013',
     lineWidth: 1,
     radius: (data) => {
       return lerp(data.from.z, -0.15, .1, 5, 1);

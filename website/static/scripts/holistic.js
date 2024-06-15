@@ -7,10 +7,10 @@ const canvasCtx4 = out4.getContext('2d');
 const loadingScreen = document.querySelector('.loading-screen');
 const mainContent = document.querySelector('.main-content');
 
-let sequence = [];
+let sequence = []; 
 let sentence = [];
 let predictions = [];
-const threshold = 0.2;
+const threshold = 0.7;
 const actions = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'nice', 'thanks', 'time', 'what', 'where'];
 
 // Used to eliminate jumpy action output 
@@ -30,7 +30,7 @@ wordCounter.textContent = '0/5';
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
-    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-7190a.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=e5df5a66-a17d-4d52-b339-9afe1b8fbede');
+    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-7190a.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=7765aae9-b4d1-4914-80ff-e29ec68d2e0a');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
     console.log(tf.getBackend());
@@ -48,6 +48,32 @@ async function loadModel() {
 }
 
 loadModel();
+
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video4.playsInline = true;
+    video4.srcObject = stream;
+    video4.play();
+    camera.start();
+  } catch (error) {
+    console.error("Error accessing the camera:", error);
+    // Check if the error is due to camera access denial
+    if (error.name === 'NotAllowedError' || error.name === 'SecurityError') {
+      // Display a user-friendly message informing about camera access denial
+      alert("Camera access is required for this application. Please grant camera access in your browser settings.");
+    } else {
+      // For other errors, display a generic error message
+      alert("An error occurred while accessing the camera. Please try again later.");
+    }
+  }
+}
+
+
+function main() {
+  console.log("Main function is running.");
+  // Add any additional initialization code here
+}
 
 function extractKeypoints(results) {
   const flatten = (arr) => arr.reduce((flat, toFlatten) => flat.concat(toFlatten), []);
@@ -266,14 +292,6 @@ document.getElementById('monke').addEventListener('click', () => {
     // document.querySelector('.back').textContent = `${currentWord}`;
   }, 5000);
 });
-
-// Adjust camera settings for mobile devices
-if (/Mobi|Android/i.test(navigator.userAgent)) {
-  camera.width = 320;
-  camera.height = 320;
-}
-
-camera.start();
 
 new ControlPanel(controlsElement4, {
   selfieMode: true,

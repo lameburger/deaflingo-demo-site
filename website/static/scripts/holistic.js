@@ -10,14 +10,14 @@ const mainContent = document.querySelector('.main-content');
 let sequence = []; 
 let sentence = [];
 let predictions = [];
-const threshold = 0.7;
+const threshold = 0.2;
 const actions = ['burrito', 'hello', 'i love you', 'meet you', 'my', 'name', 'nice', 'thanks', 'time', 'what', 'where'];
 
 // Used to eliminate jumpy action output 
 let lastAction = null;
 let consistentAction = null;
 let actionCounter = 0;
-const actionThreshold = 1; // Change this value to the desired threshold
+const actionThreshold = 0; // Change this value to the desired threshold
 
 // Load time
 let lastFrameTime = 0;

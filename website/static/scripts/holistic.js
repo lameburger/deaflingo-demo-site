@@ -30,7 +30,7 @@ wordCounter.textContent = '0/5';
 // Load your TensorFlow.js model (assuming you have a model to load)
 async function loadModel() {
   try {
-    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-7190a.appspot.com/o/tfjs_files%2Fmodel.json?alt=media&token=f6644877-f3c5-414a-926c-7092fb5e5ce0');
+    model = await tf.loadLayersModel('https://firebasestorage.googleapis.com/v0/b/deaflingo-7190a.appspot.com/o/model.json?alt=media&token=b515d3c5-b8de-4a56-8fe3-b79415275a4d');
     console.log("Model loaded successfully.");
     console.log("Model summary:", model.summary());
     console.log(tf.getBackend());

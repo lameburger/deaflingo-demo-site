@@ -1,6 +1,6 @@
-Deaflingo - realtime sign language recognization using tensorflowjs and MediaPipe
+#Deaflingo - realtime sign language recognization using tensorflowjs and MediaPipe
 
-You can access and use the app through the following link: deaflingo.app.
+#You can access and use the app through the following link: deaflingo.app.
 
 Getting Started
 
